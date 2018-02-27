@@ -24,12 +24,13 @@ mutable struct Walk1D <: MDP{Walk1DState,Float64}
     p::Walk1DParams
     distr::Distribution
 end
+Walk1D() = Walk1D(Walk1DParams(), Normal(0.0, 1.0))
 
 immutable RandomGaussian <: Policy
     distr::Distribution
     rng::AbstractRNG
 end
-RandomGaussian(rng::AbstractRNG, m::Float64=0.0, s::Float64=1.0) = RandomGaussian(Normal(m,s), rng)
+RandomGaussian(rng::AbstractRNG=MersenneTwister(0), m::Float64=0.0, s::Float64=1.0) = RandomGaussian(Normal(m,s), rng)
 function POMDPs.action(pol::RandomGaussian, s::Walk1DState)
     return rand(pol.rng, pol.distr)
 end
