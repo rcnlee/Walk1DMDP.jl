@@ -1,6 +1,6 @@
 module Walk1DMDP
 
-using POMDPs, Distributions
+using POMDPs, POMDPToolbox, Distributions, Plots
 
 export
     Walk1DParams,
@@ -56,6 +56,8 @@ end
 function miss_distance(mdp::Walk1D, s::Walk1DState)
     max(mdp.p.threshx-abs(s.x), 0.0)
 end
+
+include("visualization.jl")
 
 #MCTS.next_action(pol::RandomGaussian, sim::Walk1D, s::Walk1DState, snode) = action(pol, s)
 
