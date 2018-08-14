@@ -1,6 +1,6 @@
 module Walk1DMDP
 
-using POMDPs, POMDPToolbox, Distributions, Plots
+using POMDPs, POMDPToolbox, Distributions, Plots, MCTS
 
 export
     Walk1DParams,
@@ -40,6 +40,7 @@ end
 function POMDPs.generate_s(mdp::Walk1D, s::Walk1DState, a::Float64, rng::AbstractRNG)
     Walk1DState(s.t+1, s.x+a)
 end
+POMDPs.discount(mdp::Walk1D) = 1.0
 isevent(mdp::Walk1D, s::Walk1DState) = s.x > mdp.p.threshx
 POMDPs.isterminal(mdp::Walk1D, s::Walk1DState) = isevent(mdp, s) || s.t >= mdp.p.t_max
 function POMDPs.reward(mdp::Walk1D, s::Walk1DState, a::Float64, sp::Walk1DState)
@@ -56,9 +57,9 @@ end
 function miss_distance(mdp::Walk1D, s::Walk1DState)
     max(mdp.p.threshx-abs(s.x), 0.0)
 end
+MCTS.next_action(pol::RandomGaussian, sim::Walk1D, s::Walk1DState, snode) = action(pol, s)
 
 include("visualization.jl")
 
-#MCTS.next_action(pol::RandomGaussian, sim::Walk1D, s::Walk1DState, snode) = action(pol, s)
 
 end # module
