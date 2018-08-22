@@ -58,6 +58,7 @@ function miss_distance(mdp::Walk1D, s::Walk1DState)
     max(mdp.p.threshx-abs(s.x), 0.0)
 end
 MCTS.next_action(pol::RandomGaussian, sim::Walk1D, s::Walk1DState, snode) = action(pol, s)
+Base.string(s::Walk1DState) = "($(s.t),$(s.x))"
 
 include("visualization.jl")
 
